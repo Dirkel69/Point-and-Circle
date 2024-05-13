@@ -1,4 +1,6 @@
-﻿namespace ZufalligScheisse
+﻿using System.Reflection.Metadata.Ecma335;
+
+namespace ZufalligScheisse
 {
     class Program
     {
@@ -12,6 +14,21 @@
             Point point2 = new Point(7, -2);
             Print(point2);//(7, 0)
             Console.WriteLine(point1.IsBigger(point2));//true
+            
+
+
+            //Circle
+            point1 = null;
+            point2 = null;
+            Point point1 = new Point(3, 4);
+            Circle c1 = new Circle(point1, 5);
+            Console.WriteLine(c1.Distance());
+            c1.SetY(-2);
+            c1.Print();//(3, 2), radius = 5
+            Circle c2 = new Circle(new Point(7, -2), 3);
+            c2.Print();//(7, 0), radius = 3
+            Console.WriteLine(c1.IsBigger(c2));//true
+
 
         }
 
@@ -61,5 +78,42 @@
             arr.ToList().ForEach(p => { if (p.Disctance() > res.Disctance()) res = p; });
             return res;
         }
+
+
+        //Circle functions
+        public static void Print(Circle c) => Console.WriteLine($"({c.GetCenter().GetX()},{c.GetCenter().GetY()}), radius = {c.GetRadius()}");
+        public static double Area(Circle c) => Math.PI * c.GetRadius() * c.GetRadius();
+        public static void Subtract(Circle c1, int num)
+        {
+            c1.SetX(c1.GetX() - num);
+            if(num <= c1.GetY())
+                c1.SetY(c1.GetY() - num);
+        }
+        public static void Swap(Circle c1, Circle c2)
+        {
+            Point temp = c1.GetCenter();
+            c1.SetCenter(c2.GetCenter());
+            c2.SetCenter(temp);
+        }
+        public static bool Inside(Circle c1) => c1.GetR() >= c1.Distance();
+        public static Circle[] CreateArrayOfCircles(int size)
+        {
+            Circle[] arrCircle = new Circle[size];
+            Enumerable.Range(0,size).ToList().ForEach(i => arrCircle[i] = new Circle(CreateRandomPoint(), new Random().Next(0, 100)));
+            return arrCircle;
+        }
+        public static void printBiggest(Circle[] arr)
+        {
+            Circle res = arr[0];
+            arr.ToList().ForEach(c => { if (c.IsBigger(res)) res = c; });
+            Print(res);
+        }
+        public static void DeleteCircles(Circle[] arr)
+        {
+            Circle[] res = arr.Where(c => c.GetR() < c.Distance()).ToArray();
+            Console.WriteLine($"Deleted: {arr.Length=res.Length}");
+            arr = res;
+        }
+        public static void BringDown(Circle[] arr) => Enumerable.Range(0,arr.Length).ToList().ForEach(i => arr[i].SetY(arr[i].GetY() >=5 ? arr[i].GetY() - 5 : arr[i].GetY()));
     }
 }

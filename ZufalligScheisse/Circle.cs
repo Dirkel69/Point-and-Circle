@@ -24,6 +24,7 @@ namespace ZufalligScheisse
         public int GetR() => this.radius;
         public int GetX() => this.center.GetX();
         public int GetY() => this.center.GetY();
+        public double Distance() => Math.Sqrt(center.GetX() * center.GetX() + center.GetY() * center.GetY());
         public bool IsBigger(Circle otherCircle) => this.radius > otherCircle.radius;
     }
 }
